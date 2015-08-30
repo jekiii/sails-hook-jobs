@@ -125,6 +125,7 @@ module.exports = function(sails) {
           } else {
             var options = (typeof _job.options === 'object')?_job.options:{}
               , freq = _job.frequency
+              , cron = _job.cron
               , error = false;
 
             if (typeof _job.run === "function")
@@ -148,6 +149,10 @@ module.exports = function(sails) {
                 error = true;
                 log += " but frequency is not supported";
               }
+            } else if (typeof cron === 'string') {
+                var when = cron;
+                agenda.every(when, _name, _job.data);
+                log += " and scheduled every cron(" + when + ")";
             }
           }
           log += ".";
